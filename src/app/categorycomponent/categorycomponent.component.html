@@ -1,0 +1,52 @@
+<h1>categorycomponent</h1>
+
+<!--<table mat-table [dataSource]="lstmodel">
+    
+    <tr>
+        <th>Id</th>
+        <th>StoreId</th>
+        <th>Name</th>
+        <th>CreatedOn</th>
+        <th>CreatedBy</th>
+        <th>Active</th>
+    </tr>
+     <tr *ngFor="let cat of lstmodel">
+        <td>{{cat.id}}</td>
+        <td>{{cat.storeId}}</td>
+        <td>{{cat.name}}</td>
+        <td>{{cat.createdOn}}</td>
+        <td>{{cat.createdBy}}</td>
+        <td>{{cat.active}}</td>
+
+    </tr> 
+</table>-->
+
+<button type="button" class="btn btn-primary" style="margin-left:90%">Add new Record </button>
+<table mdbTable class="table table-light table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>StoreId</th>
+            <th>Name</th>
+            <th>CreatedOn</th>
+            <th>CreatedBy</th>
+            <th>Active</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr mdbTableCol *ngFor="let el of lstmodel">
+
+            <td>{{ el.id }}</td>
+            <td>{{ el.storeId }}</td>
+            <td>{{ el.name }}</td>
+            <td>{{ el.createdOn }}</td>
+            <td>{{ el.createdBy }}</td>
+            <td>{{ el.active }}</td>
+            <td><button type="button" class="btn btn-warning">Update</button></td>
+            <td><button type="button" class="btn btn-danger">Delete</button></td>
+            
+        </tr>
+    </tbody>
+</table>
