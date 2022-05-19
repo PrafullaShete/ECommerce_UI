@@ -6,5 +6,5 @@ export class Model {
   name: string = '';
   createdOn!: Date;
   createdBy: string = '';
-  active: number = 0
+  active: number = 0;
 }

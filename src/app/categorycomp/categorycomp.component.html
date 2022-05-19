@@ -1,0 +1,132 @@
+<body style="font-size:15px;">
+  <div class="container">
+
+    <div class="row mt-5">
+      <div class="col-md-12 justify-content-center d-flex">
+        <h1 style="font-size:50px;align-self: center;">Category</h1>
+      </div>
+    </div>
+
+    <div *ngIf="alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{alertMsg}}
+      <button type="button" class="btn-close" (click)="onRefreshClick()" data-bs-dismiss="alert"
+        aria-label="Close"></button>
+    </div>
+
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal"
+      style="margin-left:85%">Add New Category</button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Enter Category Details</h4>
+            <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="addCategory" (ngSubmit)="InsertNewCategory()">
+
+              <div class="mb-3">
+                <label class="form-label">StoreId</label>
+                <select class="form-control" formControlName="storeId"
+                  [ngClass]="{'is-invalid': submitted && f['storeId'].errors}">
+                  <div *ngIf="submitted && f['storeId'].errors" class="invalid-feedback">
+                    <div *ngIf="f['storeId'].errors['required']">StoreId is required</div>
+                  </div>
+                  <option *ngFor="let item of unique; let i = index" value="{{ item }}" [selected]="i == 0">
+                    {{ item }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" placeholder="Enter Name" formControlName="name"
+                  [ngClass]="{'is-invalid': submitted && f['name'].errors}">
+                <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                  <div *ngIf="f['name'].errors['required']">Name is required</div>
+                  <div *ngIf="f['name'].errors['minlength']">
+                    Name must be at least 3 characters
+                  </div>
+                  <div *ngIf="f['name'].errors['maxlength']">
+                    Name must not exceed 15 characters
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">CreatedBy</label>
+                <input type="text" class="form-control" placeholder="Enter CreatedBy" formControlName="createdBy"
+                  [ngClass]="{'is-invalid': submitted && f['createdBy'].errors}">
+                <div *ngIf="submitted && f['createdBy'].errors" class="invalid-feedback">
+                  <div *ngIf="f['createdBy'].errors['required']">CreatedBy is required</div>
+                  <div *ngIf="f['createdBy'].errors['minlength']">
+                    CreatedBy must be at least 3 characters
+                  </div>
+                  <div *ngIf="f['createdBy'].errors['maxlength']">
+                    CreatedBy must not exceed 15 characters
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Active</label>
+                <label>
+                  <input type="checkbox" [value]="" formControlName="active"/>
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="button" (click)="onReset()" class="btn btn-secondary">Reset</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" *ngIf="loading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Type to search" [(ngModel)]="Search">
+        </div>
+        <table *ngIf="!loading" mdbTable class="table table-bordered table-responsive table-hover">
+          <thead class="thead table-light">
+            <tr>
+              <th class="text-center">StoreId</th>
+              <th class="text-center">Name</th>
+              <th class="text-center">CreatedOn</th>
+              <th class="text-center">CreatedBy</th>
+              <th class="text-center">Active</th>
+              <th class="text-center">Update</th>
+              <th class="text-center">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr mdbTableCol *ngFor="let categoryobj of lstmodel | filter:Search">
+              <td class="text-center">{{ categoryobj.storeId }}</td>
+              <td class="text-center">{{ categoryobj.name }}</td>
+              <td class="text-center">{{ categoryobj.createdOn| date:'dd-MM-yyyy' }}</td>
+              <td class="text-center">{{ categoryobj.createdBy }}</td>
+              <td *ngIf="categoryobj.active == 1" class="text-center">true</td>
+              <td *ngIf="categoryobj.active == 0" class="text-center">false</td>
+              <td class="text-center"><button type="button" style="font-size: 11px;"
+                  (click)="UpdateCategoryById(categoryobj)" routerLink="" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal" class="btn btn-warning">Update</button>
+              </td>
+              <td class="text-center"><button type="button" style="font-size: 11px;"
+                  (click)="DeleteCategoryById(categoryobj.id)" routerLink="" class="btn btn-danger">Delete</button>
+              </td>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
