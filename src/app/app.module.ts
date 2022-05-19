@@ -8,11 +8,20 @@ import { categoryApiServices } from './services/categoryapi.services';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
+import { StoreComponent } from './store/store.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { NgxBootstrapConfirmModule } from 'ngx-bootstrap-confirm';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    CategorycomponentComponent
+    CategorycomponentComponent,
+    StoreComponent,
+
+
   ],
   imports: [
     BrowserModule,
@@ -20,7 +29,11 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     BrowserAnimationsModule,
     MatTableModule,
-    RouterModule
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    Ng2SearchPipeModule,
+    NgxBootstrapConfirmModule 
   ],
   providers: [HttpClient,HttpClientModule,categoryApiServices],
   bootstrap: [AppComponent]
