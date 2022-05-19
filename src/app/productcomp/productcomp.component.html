@@ -1,0 +1,149 @@
+<h1 style="color:rgb(16, 16, 247); text-align: center;">Products</h1>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Add New Products
+</button>
+
+<!-- <button type="button" class="btn btn-sm btn-success" (click)="showSuccess()">Success</button> -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 style="color:green" class="modal-title" id="exampleModalLabel">Add Product Details</h4>
+        <button type="button" class="btn-close update-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="insertForm" (ngSubmit)="InsertProduct()">
+          <div class="mb-3">
+            <label for="id" class="form-label">Id</label>
+            <input type="number" readonly class="form-control" id="id" formControlName="id">
+          </div>
+          <div class="mb-3">
+            <label for="storeid" class="form-label">StoreId</label>
+            <input type="number" formControlName="storeId" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['storeId'].errors }" />
+            <div *ngIf="submitted && f['storeId'].errors" class="invalid-feedback">
+              <div *ngIf="f['storeId'].errors['required']">StoreId is required</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="categoryId" class="form-label">CategoryId</label>
+            <input type="number" class="form-control" id="categoryId" formControlName="categoryId">
+          </div>
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" formControlName="name"  placehoder="Enter Name"class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+              />
+            <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+              <div *ngIf="f['name'].errors['required']">Name is required</div>
+              <div *ngIf="f['name'].errors['minlenght']">
+                Name must be atleast 3 characters
+              </div>
+              <div *ngIf="f['name'].errors['maxlenght']">
+                Name must not exceed 20 characters
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" formControlName="description" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['description'].errors }">
+            <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
+              <div *ngIf="f['description'].errors['required']">Description is required</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" formControlName="price" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['price'].errors }">
+            <div *ngIf="submitted && f['price'].errors" class="invalid-feedback">
+              <div *ngIf="f['price'].errors['required']">Price is required</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="favNote" class="form-label">FavNote</label>
+            <input type="text" class="form-control" id="favNote" formControlName="favNote">
+          </div>
+          <div class="mb-3">
+            <label for="createdBy" class="form-label">CreatedBy</label>
+            <input type="text" class="form-control" id="createdBy" formControlName="createdBy">
+          </div>
+          <div class="mb-3">
+            <label for="imagePath" class="form-label">ImagePath</label>
+            <input type="text" class="form-control" id="imagePath" formControlName="imagePath">
+          </div>
+          <div class="mb-3">
+            <label for="showPrice" class="form-label">ShowPrice</label>
+            <input type="checkbox" [value]="" id="showPrice" formControlName="showPrice">
+          </div>
+          <div class="mb-3">
+            <label for="active" class="form-label">Active</label>
+            <input type="checkbox" [value]="" formControlName="active">
+          </div>
+          <button type="submit" class="btn btn-primary ">submit</button>
+          <button type="reset" (click)="onReset()" style="margin-left: 2%" #closebutton class="btn btn-secondary"
+            data-bs-dismiss="modal">Close</button>
+        </form>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<table mdbTable class="table table-light table-striped">
+  <thead>
+
+    <tr>
+      <th style="color:#700c70">Id</th>
+      <th style="color:#700c70">StoreId</th>
+      <th style="color:#700c70">CategoryId</th>
+      <th style="color:#700c70">Name</th>
+      <th style="color:#700c70">Description</th>
+      <th style="color:#700c70">Showprice</th>
+      <th style="color:#700c70">Price</th>
+      <th style="color:#700c70">FavNote</th>
+      <th style="color:#700c70">CreatedOn</th>
+      <th style="color:#700c70">CreatedBy</th>
+      <th style="color:#700c70">Active</th>
+      <th style="color:#700c70">Imagepath</th>
+      <th style="color:#700c70">Delete</th>
+      <th style="color:#700c70">Update</th>
+    </tr>
+  </thead>
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid blue;
+    }
+  </style>
+  <tbody>
+    <tr mdbTableCol *ngFor="let product of lstproduct">
+
+      <td>{{product.id}}</td>
+      <td>{{product.storeId}}</td>
+      <td>{{product.categoryId}}</td>
+      <td>{{product.name}}</td>
+      <td>{{product.description}}</td>
+      <td>{{product.showPrice}}</td>
+      <td>{{product.price}}</td>
+      <td>{{product.favNote}}</td>
+      <td>{{product.createdOn| date:'dd-MM-yyyy'}}</td>
+      <td>{{product.createdBy}}</td>
+      <td>{{product.active}}</td>
+      <td>{{product.imagePath}}</td>
+
+
+      <td><button style="margin-left: 2%;" (click)="Delete(product.id)" routerlink="" class="btn btn-sm btn-danger">
+          <i class="fas fa-trash"></i> Delete</button></td>
+      <td><button type="button" (click)="UpdateProduct(product) " style="margin-left: 2%" routerlink=""
+          data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning">Update</button></td>
+    </tr>
+
+  </tbody>
+</table>
