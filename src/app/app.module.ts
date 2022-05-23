@@ -12,8 +12,12 @@ import { RouterModule } from '@angular/router';
 import { ProductcompComponent } from './productcomp/productcomp.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxBootstrapConfirmModule } from 'ngx-bootstrap-confirm';
-import {ToastrModule} from 'ngx-toastr'
+import {ToastrModule} from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { TableModule } from 'primeng/table';
+import { ExcelService } from './services/prodExel.service';
+
 
 @NgModule({
   declarations: [
@@ -33,12 +37,14 @@ import { NgxSpinnerModule } from "ngx-spinner";
     NgxBootstrapConfirmModule,
     ToastrModule.forRoot({
       closeButton: true,
-      timeOut: 4000, // 5 seconds
+      timeOut: 3000, // 5 seconds
       progressBar: true,
     }),
     NgxSpinnerModule,
+    Ng2SearchPipeModule,
+    TableModule,
   ],
-  providers: [HttpClient,HttpClientModule,categoryApiServices,productApiServices],
+  providers: [HttpClient,HttpClientModule,categoryApiServices,productApiServices,ExcelService],
   
   bootstrap: [AppComponent]
 })
