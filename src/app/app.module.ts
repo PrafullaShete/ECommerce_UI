@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CategorycomponentComponent } from './categorycomponent/categorycomponent.component';
-import { HttpClient,HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { categoryApiServices } from './services/categoryapi.services';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
@@ -13,8 +13,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxBootstrapConfirmModule } from 'ngx-bootstrap-confirm';
-
-
+import { ToastrService } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
+import { TableModule } from 'primeng/table';
+import { StoreService } from './services/store.service';
+import { PaginatorModule } from 'primeng/paginator';
+import { ExcelService } from './services/excel.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,9 +37,16 @@ import { NgxBootstrapConfirmModule } from 'ngx-bootstrap-confirm';
     FormsModule,
     ReactiveFormsModule,
     Ng2SearchPipeModule,
-    NgxBootstrapConfirmModule 
+    NgxBootstrapConfirmModule,
+    ToastrModule.forRoot({
+      closeButton: true,
+      timeOut: 15000, // 15 seconds
+      progressBar: true,
+    }),
+    TableModule
+
   ],
-  providers: [HttpClient,HttpClientModule,categoryApiServices],
+  providers: [HttpClient, HttpClientModule, categoryApiServices, StoreService, ExcelService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

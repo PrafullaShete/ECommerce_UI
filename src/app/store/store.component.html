@@ -1,9 +1,26 @@
-<h2>Store Detail</h2>
+<div class="row mt-5">
+   <div class="col-md-12 justify-content-center d-flex">
+      <h1 style="font-size:50px;align-self: center;">Store</h1>
+   </div>
+</div>
 <!-- Button trigger modal -->
+
 <button type="button" (click)="onReset()" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
     Add Store
 </button>
 <hr>
+<button type="button" class="btn btn-primary" (click)="exportAsXLSX()">
+    Download XLSX file
+</button>
+
+<hr>
+<div *ngIf="alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+
+    {{alertMsg}}
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -41,6 +58,7 @@
                                 <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
                                     <div *ngIf="f.name.errors.required">Store name required</div>
                                 </div>
+                     
                             </div>
                             <div>
                                 <label>TagLine</label>
@@ -62,7 +80,7 @@
                                 <label>BackGroundImage</label>
                                 <input type="file" class="form-control " formControlName="backGroundImage"
                                     (change)="onFileselected($event)" id="backGroundImage" />
-                                <!-- <button type="onUpload()">Upload</button> -->
+                          
                             </div>
                             <div>
                                 <label>Supports Multiple Language:</label>
@@ -94,39 +112,60 @@
 <div class="spinner-border text-info-centre " *ngIf="Loading" role="status">
     <span class="visually-hidden">Loading...</span>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="search-hero">
-            <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
-                placeholder="&#61442;  search">
-        </div>
-        <table *ngIf="!Loading" mdbTable class="table table-light  table-bordered ">
-            <thead>
+
+
+        <p-table p-table #datatable style="width: 9px;" *ngIf="storelist" [value]="storelist"
+            styleClass="p-datatable-gridlines" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,15,20]"  [filterDelay]="0" [globalFilterFields]="['id','storeId','name']">
+            
+            <ng-template pTemplate="caption">
+                <div style="text-align: right">
+
+                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+
+                    <input type="text" pInputText size="50" placeholder="Search by Id,StoreId,Name,Tagline"
+                        style="width:auto" (input)="datatable.filterGlobal(getEventValue($event), 'contains')">
+
+                </div>
+
+            </ng-template>
+            <ng-template pTemplate="header">
                 <tr>
-                    <th class="text-center">UserId</th>
-                    <th class="text-center">StoreId</th>
-                    <th class="text-center">Name</th>
-                    <th class="text-center">TagLine</th>
-                    <th class="text-center">CreatedBy</th>
-                    <th class="text-center">Active</th>
-                    <th class="text-center">Update</th>
-                    <th class="text-center">Delete</th>
+                    <th class="text-center" pSortableColumn="userId">UserId <p-sortIcon field="userId"></p-sortIcon>
+                    </th>
+                    <th class="text-center" pSortableColumn="storeId">StoreId <p-sortIcon field="storeId"></p-sortIcon>
+                    </th>
+                    <th class="text-center" pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon>
+                    </th>
+                    <th class="text-center" pSortableColumn="tagLine">TagLine <p-sortIcon field="tagLine"></p-sortIcon>
+                    </th>
+                    <th class="text-center" pSortableColumn="createdBy">CreatedBy <p-sortIcon field="createdBy">
+                        </p-sortIcon>
+                    </th>
+                    <th class="text-center" pSortableColumn="active">Active <p-sortIcon field="active"></p-sortIcon>
+                    </th>
+                    <th class="text-center">Update </th>
+                    <th class="text-center">Delete </th>
+
                 </tr>
-            </thead>
-            <tbody>
-                <tr mdbTableCol *ngFor="let storeobj of storelist | filter:searchText">
+            </ng-template>
+            <ng-template pTemplate="body" let-storeobj>
+                <tr>
                     <td class="text-center">{{storeobj.userId}}</td>
                     <td class="text-center">{{storeobj.storeId}}</td>
                     <td class="text-center">{{storeobj.name}}</td>
                     <td class="text-center">{{storeobj.tagLine}}</td>
                     <td class="text-center">{{storeobj. createdBy}}</td>
-                    <td class="text-center">{{ storeobj.active }}</td>
+                    <td class="text-center">{{storeobj.active}}</td>
                     <td class="text-center"><button type="button" class="btn btn-warning" data-toggle="modal"
-                            data-target="#exampleModal" (click)="GetStoreById(storeobj.storeId)">Update</button></td>
-                    <td class="text-center"><button type="button" (click)="deleteStore(storeobj.userId)">Delete
-                        </button></td>
+                            data-target="#exampleModal" style="color: rgb(11, 11, 10);background-color: #00ff95;"
+                            (click)="GetStoreById(storeobj.storeId)">Update</button></td>
+           
+                    <td class="text-center"><button type="button" class="btn btn-warning"
+                            style="color: rgb(11, 11, 10);background-color: #f14b22;"
+                            (click)="deleteStore(storeobj.userId)">Delete</button></td>
                 </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+            </ng-template>
+        </p-table>
+ 

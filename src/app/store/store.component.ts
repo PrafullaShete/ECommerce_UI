@@ -1,3 +1,4 @@
+
 import { StoreModel } from './../Model/store';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -7,7 +8,8 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ThisReceiver } from '@angular/compiler';
-
+import { ToastrService } from 'ngx-toastr';
+import { ExcelService } from '../services/excel.service';
 @Component({
   selector: 'app-store',
   templateUrl: './store.component.html',
@@ -20,7 +22,7 @@ export class StoreComponent implements OnInit {
 
   constructor(public storeservice: StoreService, public router: Router,
     private formBuilder: FormBuilder, private ngxBootstrapConfirmService: NgxBootstrapConfirmService,
-    private http: HttpClient,
+    private http: HttpClient, private toastrService: ToastrService, private excelService: ExcelService
   ) { }
 
   submitted: boolean = false;
@@ -28,9 +30,9 @@ export class StoreComponent implements OnInit {
   updated: boolean = false;
   storeobj: StoreModel = new StoreModel();
   selectedFile: any;
-  searchText: any;
   Loading: boolean = false;
-
+  alert: boolean = false;
+  alertMsg: any;
   ngOnInit(): void {
     this.GetAllStore();
     this.storeForm = this.formBuilder.group({
@@ -46,9 +48,16 @@ export class StoreComponent implements OnInit {
       active: [true]
     });
   }
+
   get f() {
     return this.storeForm.controls;
   }
+
+  getEventValue($event: any): string {
+    return $event.target.value;
+  }
+
+
 
   GetAllStore() {
     this.Loading = true;
@@ -64,7 +73,7 @@ export class StoreComponent implements OnInit {
     );
   }
   submitForm() {
-    debugger;
+
     this.submitted = true;
 
     if (this.storeForm.invalid) {
@@ -77,7 +86,7 @@ export class StoreComponent implements OnInit {
     this.storeobj.backGroundImage = this.storeForm.value.backGroundImage;
     this.storeobj.storeRoute = this.storeForm.value.storeRoute;
     this.storeobj.createdBy = this.storeForm.value.createdBy;
-    debugger;
+
     console.log('on submit', this.storeobj);
 
     let storeData = new FormData();
@@ -89,11 +98,13 @@ export class StoreComponent implements OnInit {
       storeData.append("userId", this.storeobj.userId.toString());
       storeData.append("storeId", this.storeobj.storeId.toString());
     }
+
     storeData.append("name", this.storeobj.name);
     storeData.append("theme", this.storeobj.theme);
     storeData.append("tagLine", this.storeobj.tagLine);
     storeData.append("storeRoute", this.storeobj.storeRoute);
     storeData.append("backGroundImage", this.storeobj.backGroundImage)
+    storeData.append("supportsMultipleLang", this.storeobj.supportsMultipleLang.toString())
 
 
     if (this.selectedFile != null && this.selectedFile.length > 0) {
@@ -106,7 +117,8 @@ export class StoreComponent implements OnInit {
         this.GetAllStore();
         this.storeForm.reset();
         this.closebutton.nativeElement.click();
-        this.selectedFile = null;
+        this.alert = true;
+        this.alertMsg = "Store inserted successfully"
 
       });
     }
@@ -116,7 +128,8 @@ export class StoreComponent implements OnInit {
         this.editStore(this.storeobj);
         this.storeForm.reset();
         this.closebutton.nativeElement.click();
-        this.selectedFile = null;
+        this.alert = true;
+        this.alertMsg = "Store updated successfully"
         this.GetAllStore();
 
       });
@@ -134,9 +147,11 @@ export class StoreComponent implements OnInit {
         console.log('Okay');
         this.storeservice.deleteStoreById(userId).subscribe(data => {
           console.log(userId);
-          this.GetAllStore();
-        })
 
+          this.GetAllStore();
+          this.alert = true;
+          this.alertMsg = "Store Deleted successfully"
+        })
       }
       else {
         console.log('Cancel');
@@ -150,11 +165,10 @@ export class StoreComponent implements OnInit {
   }
 
   GetStoreById(storeId: any) {
-    debugger;
+
     this.storeservice.GetStoreById(storeId).subscribe((data: any) => {
       console.log(data.data);
       this.storeobj = data.data;
-      debugger;
       this.editStore(this.storeobj);
       console.log(this.storeForm.Value)
 
@@ -172,13 +186,16 @@ export class StoreComponent implements OnInit {
       storeRoute: storeobj.storeRoute,
 
     });
-    debugger;
+
   }
   onFileselected(event: any) {
     this.selectedFile = event.target.files
     console.log(event);
   }
 
+  exportAsXLSX(): void {
+    this.excelService.exportAsExcelFile(this.storelist, 'Store_Detail');
+  }
 }
 
 

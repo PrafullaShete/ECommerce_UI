@@ -4,7 +4,7 @@
     color: #405065;
   }
   
-  .search-hero {
+  .search {
     max-width: 500px;
     padding-bottom: 50px;
     margin:auto;
@@ -38,5 +38,11 @@
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+  }
+  p {
+    font-family: Lato;
+  }
+  td {
+    border: 1px solid black;
   }
   
