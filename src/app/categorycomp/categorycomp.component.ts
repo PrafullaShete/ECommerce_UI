@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { categoryApiServices } from '../services/categoryapi.services';
 import { Model } from '../Model/model';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, FormArray, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { NgxBootstrapConfirmService } from 'ngx-bootstrap-confirm';
-
+import { ExcelService } from '../services/excel.service';
 
 @Component({
   selector: 'app-categorycomp',
@@ -12,23 +12,22 @@ import { NgxBootstrapConfirmService } from 'ngx-bootstrap-confirm';
   styleUrls: ['./categorycomp.component.scss']
 })
 export class CategorycompComponent implements OnInit {
-  lstmodel: Model[] = [];
+  listmodel: Model[] = [];
   addCategory: any;
   tempId: any = 0;
   activeValue: any;
   @ViewChild('closebutton') closebutton: any;
   storeIdlist: Array<any> = [];
   submitted = false;
-  // onchecked = true;
   loading: boolean = false;
   alert: boolean = false;
   alertMsg: any;
-  Search: any;
   arry1: any;
   unique: any;
+  @ViewChild('TABLE') table: any;
 
   constructor(private categoryapiservices: categoryApiServices, public router: Router, private formBuilder: FormBuilder,
-    private ngxBootstrapConfirmService: NgxBootstrapConfirmService) { }
+    private ngxBootstrapConfirmService: NgxBootstrapConfirmService,private excelService : ExcelService) { }
 
   ngOnInit() {
 
@@ -65,7 +64,7 @@ export class CategorycompComponent implements OnInit {
           });
           this.unique = [...new Set(arr1)];
           console.log(this.unique);
-          this.lstmodel = data.data;
+          this.listmodel = data.data;
           this.loading = false;
         })
       },
@@ -86,7 +85,6 @@ export class CategorycompComponent implements OnInit {
       else {
         this.addCategory.controls.active.setValue(0);
       }
-
       if (this.tempId == 0) {
         debugger;
         this.addCategory.controls.id.setValue(0);
@@ -106,20 +104,13 @@ export class CategorycompComponent implements OnInit {
           this.onReset();
           this.alert = true;
           this.alertMsg = "Category Updated Successfully!"
+          this.tempId=0;
           this.GetAllCategory();
         })
       }
     }
     this.closebutton.nativeElement.click();
   }
-
-  // DeleteCategoryById(id: any) {
-  //   debugger;
-  //   this.categoryapiservices.DeleteCategoryById(id).subscribe(data => {
-  //     console.log(id);
-  //     this.GetAllCategory();
-  //   })
-  // }
 
   UpdateCategoryById(category: any) {
     debugger;
@@ -168,6 +159,14 @@ export class CategorycompComponent implements OnInit {
         console.log('No');
       }
     });
+  }
+  
+  getEventValue($event:any) :string {
+    return $event.target.value;
+  } 
+
+  exportAsXLSX():void {
+    this.excelService.exportAsExcelFile(this.listmodel, 'Category Datasheet');
   }
 }
 

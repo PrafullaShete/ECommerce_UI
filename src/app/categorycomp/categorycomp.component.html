@@ -1,4 +1,4 @@
-<body style="font-size:15px;">
+<body style="font-size:10px;">
   <div class="container">
 
     <div class="row mt-5">
@@ -7,7 +7,8 @@
       </div>
     </div>
 
-    <div *ngIf="alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div *ngIf="alert" style="font-size:20px;align-self: center;"
+      class="alert alert-success alert-dismissible fade show" role="alert">
       {{alertMsg}}
       <button type="button" class="btn-close" (click)="onRefreshClick()" data-bs-dismiss="alert"
         aria-label="Close"></button>
@@ -15,6 +16,9 @@
 
     <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal"
       style="margin-left:85%">Add New Category</button>
+
+    <button type="button" class="btn btn-secondary mb-3" (click)="exportAsXLSX()" style="margin-left:86%">Export as
+      Excel</button>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -72,7 +76,7 @@
               <div class="mb-3">
                 <label class="form-label">Active</label>
                 <label>
-                  <input type="checkbox" [value]="" formControlName="active"/>
+                  <input type="checkbox" [value]="" formControlName="active" />
                 </label>
               </div>
 
@@ -93,24 +97,41 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-25">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Type to search" [(ngModel)]="Search">
         </div>
-        <table *ngIf="!loading" mdbTable class="table table-bordered table-responsive table-hover">
-          <thead class="thead table-light">
+
+        <p-table styleClass="p-datatable-gridlines" responsiveLayout="scroll" #datatable *ngIf="listmodel"
+          [value]="listmodel" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [rowsPerPageOptions]="[5,10,15,20]" [filterDelay]="0" [globalFilterFields]="['storeId','name','CreatedBy']">
+
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" size="50" placeholder="Type to search" style="width:auto"
+                (input)="datatable.filterGlobal(getEventValue($event), 'contains')">
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
             <tr>
-              <th class="text-center">StoreId</th>
-              <th class="text-center">Name</th>
-              <th class="text-center">CreatedOn</th>
-              <th class="text-center">CreatedBy</th>
-              <th class="text-center">Active</th>
+              <th class="text-center" pSortableColumn="storeId">StoreId <p-sortIcon field="storeId"></p-sortIcon>
+              </th>
+              <th class="text-center" pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon>
+              </th>
+              <th class="text-center" pSortableColumn="createdOn">CreatedOn <p-sortIcon field="createdOn"></p-sortIcon>
+              </th>
+              <th class="text-center" pSortableColumn="createdBy">CreatedBy <p-sortIcon field="createdBy"></p-sortIcon>
+              </th>
+              <th class="text-center" pSortableColumn="active">Active <p-sortIcon field="active"></p-sortIcon>
+              </th>
               <th class="text-center">Update</th>
               <th class="text-center">Delete</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr mdbTableCol *ngFor="let categoryobj of lstmodel | filter:Search">
+          </ng-template>
+          <ng-template pTemplate="body" let-categoryobj>
+            <tr>
               <td class="text-center">{{ categoryobj.storeId }}</td>
               <td class="text-center">{{ categoryobj.name }}</td>
               <td class="text-center">{{ categoryobj.createdOn| date:'dd-MM-yyyy' }}</td>
@@ -124,9 +145,12 @@
               <td class="text-center"><button type="button" style="font-size: 11px;"
                   (click)="DeleteCategoryById(categoryobj.id)" routerLink="" class="btn btn-danger">Delete</button>
               </td>
-          </tbody>
-        </table>
+            </tr>
+          </ng-template>
+        </p-table>
+
       </div>
     </div>
+
   </div>
 </body>

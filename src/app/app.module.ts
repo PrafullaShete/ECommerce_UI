@@ -12,6 +12,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxBootstrapConfirmModule } from 'ngx-bootstrap-confirm';
 import { FormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { TableModule } from 'primeng/table';
+import { PaginatorModule } from "primeng/paginator";
+import { ExcelService } from './services/excel.service';
 
 @NgModule({
   declarations: [
@@ -28,9 +31,11 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     ReactiveFormsModule,
     NgxBootstrapConfirmModule,
     FormsModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    TableModule,
+    PaginatorModule
   ],
-  providers: [HttpClient,HttpClientModule,categoryApiServices],
+  providers: [HttpClient,HttpClientModule,categoryApiServices,ExcelService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
