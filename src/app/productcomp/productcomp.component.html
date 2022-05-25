@@ -1,6 +1,5 @@
 <body style="font: size 10px;">
   <div class="container">
-    
     <div class="row mt-5">
       <div class="col-md-12 justify-content-center d-flex">
         <h1 style="font-size:50px;align-self: center;">Products</h1>
@@ -9,14 +8,14 @@
     <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
       <p style="font-size: 20px; color: white">Loading...</p>
     </ngx-spinner>
+    
+  
+    <button pButton pRipple type="button" label="Add New Products" icon="pi pi-plus" class="p-button-rounded mb-3 p-button-primary"data-bs-toggle="modal"
+     data-bs-target="#exampleModal" style="font-size:15px;margin-left:-6rem"></button><br>
 
-    <button type="button" style="margin-left: 90%" class="btn btn-success mb-3" data-bs-toggle="modal"
-      data-bs-target="#exampleModal">
-      Add New Products
-    </button>
-    <button (click)="exportAsXLSX()" type="button" style="margin-left: 90%" class="btn btn-primary mb-3">
-      Export to Excel
-    </button>
+     <button pButton pRipple type="button" label="Export as Excel" icon="pi pi-file-excel" class="p-button-rounded mb-3 p-button-secondary" 
+      (click)="exportAsXLSX()" style="font-size:15px;margin-left:-6rem; background:rebeccapurple;"></button>
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -82,10 +81,10 @@
                 <label for="createdBy" class="form-label">CreatedBy</label>
                 <input type="text" class="form-control" id="createdBy" formControlName="createdBy">
               </div>
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <label for="imagePath" class="form-label">ImagePath</label>
                 <input type="text" class="form-control" id="imagePath" formControlName="imagePath">
-              </div>
+              </div> -->
               <div class="mb-3">
                 <label for="showPrice" class="form-label">ShowPrice</label>
                 <input type="checkbox" [value]="" id="showPrice" formControlName="showPrice">
@@ -104,65 +103,15 @@
         </div>
       </div>
     </div>
+    
+<p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000"></p-confirmDialog>
 
-    <div class="row">
+    <div class="row" style="margin-left:-7rem; margin-right: -7rem;">
       <div class="col=md-25">
         <div class="form-group"></div>
-    <!-- <table mdbTable class="table table-light table-striped">
-
-  <thead>
-
-    <tr>
-      <th style="color:#700c70">Id</th>
-      <th style="color:#700c70">StoreId</th>
-      <th style="color:#700c70">CategoryId</th>
-      <th style="color:#700c70">Name</th>
-      <th style="color:#700c70">Description</th>
-      <th style="color:#700c70">Showprice</th>
-      <th style="color:#700c70">Price</th>
-      <th style="color:#700c70">FavNote</th>
-      <th style="color:#700c70">CreatedOn</th>
-      <th style="color:#700c70">CreatedBy</th>
-      <th style="color:#700c70">Active</th>
-      <th style="color:#700c70">Imagepath</th>
-      <th style="color:#700c70">Delete</th>
-      <th style="color:#700c70">Update</th>
-    </tr>
-  </thead>
-  <style>
-    table,
-    th,
-    td {
-      border: 1px solid blue;
-    }
-  </style>
-  <tbody>
-    <tr mdbTableCol *ngFor="let product of lstproduct | filter:searchText">
-
-      <td>{{product.id}}</td>
-      <td>{{product.storeId}}</td>
-      <td>{{product.categoryId}}</td>
-      <td>{{product.name}}</td>
-      <td>{{product.description}}</td>
-      <td>{{product.showPrice}}</td>
-      <td>{{product.price}}</td>
-      <td>{{product.favNote}}</td>
-      <td>{{product.createdOn| date:'dd-MM-yyyy'}}</td>
-      <td>{{product.createdBy}}</td>
-      <td>{{product.active}}</td>
-      <td>{{product.imagePath}}</td>
-
-
-      <td><button style="margin-left: 2%;" (click)="Delete(product.id)" routerlink="" class="btn btn-sm btn-danger">
-          <i class="fas fa-trash"></i> Delete</button></td>
-      <td><button type="button" (click)="UpdateProduct(product) " style="margin-left: 2%" routerlink=""
-          data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning">Update</button></td>
-    </tr>
-
-  </tbody>
-</table> -->
-    <p-table p-table #datatable style="width: 9px;" *ngIf="listproduct " [value]="listproduct"
-      styleClass="p-datatable-gridlines" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+         <!--p-Table--> 
+    <p-table p-table #datatable style="width:10px;" *ngIf="listproduct " [value]="listproduct"
+      styleClass="p-datatable-gridlines" responsiveLayout="true"  [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [rowsPerPageOptions]="[5,10,15,20]" [filterDelay]="0" [globalFilterFields]="['id','storeId','name','price']">
       <!-- Global Filter User Input-->
@@ -175,56 +124,63 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th class="text-center" style="color:#700c70" pSortableColumn="id"> Id <p-sortIcon field="id"></p-sortIcon>
+          <th class="text-center" style="color:#700c70" pSortableColumn="id">Id<p-sortIcon field="id"></p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="storeId"> StoreId <p-sortIcon field="storeId"></p-sortIcon>
+          <th  class="text-center" style="color:#700c70" pSortableColumn="storeId">StoreId<p-sortIcon field="storeId"></p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="categoryId"> CategoryId <p-sortIcon field="categoryId">
+          <th class="text-center" style="color:#700c70" pSortableColumn="categoryId">CategoryId<p-sortIcon field="categoryId">
             </p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="name"> Name <p-sortIcon field="name"></p-sortIcon>
+          <th class="text-center" style=" width:2%; color:#700c70" pSortableColumn="name">Name<p-sortIcon field="name">
+           </p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="description"> Description <p-sortIcon field="description">
+          <th class="text-center" style=" width:2%; color:#700c70" pSortableColumn="description">Description<p-sortIcon field="description">
             </p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="showprice"> Showprice <p-sortIcon field="showprice"></p-sortIcon>
+          <th class="text-center" style="color:#700c70" pSortableColumn="showprice">Showprice<p-sortIcon field="showprice"></p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="price"> Price <p-sortIcon field="price"></p-sortIcon>
+          <th class="text-center" style="color:#700c70" pSortableColumn="price">Price<p-sortIcon field="price"></p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="favNote"> FavNote <p-sortIcon field="favNote"></p-sortIcon>
+          <th class="text-center" style="color:#700c70" pSortableColumn="favNote">FavNote<p-sortIcon field="favNote"></p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="createdOn"> CreatedOn <p-sortIcon field="createdOn"></p-sortIcon>
+          <th class="text-center" style="color:#700c70" pSortableColumn="createdOn">CreatedOn<p-sortIcon field="createdOn"></p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="createdBy"> CreatedBy <p-sortIcon field="createdBy"></p-sortIcon>
+          <th class="text-center" style="color:#700c70" pSortableColumn="createdBy">CreatedBy<p-sortIcon field="createdBy"></p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="active"> Active <p-sortIcon field="active"></p-sortIcon>
+          <th class="text-center" style="color:#700c70" pSortableColumn="active">Active<p-sortIcon field="active"></p-sortIcon>
           </th>
-          <th style="color:#700c70" pSortableColumn="imagepath"> Imagepath <p-sortIcon field="imagepath"></p-sortIcon>
-          </th>
-          <th style="color:#700c70">Delete</th>
-          <th style="color:#700c70">Update</th>
+          <!-- <th style="color:#700c70" pSortableColumn="imagepath"> Imagepath <p-sortIcon field="imagepath"></p-sortIcon>
+          </th> -->
+          <th class="text-center" style="color:#700c70">Delete</th>
+          <th class="text-center" style="color:#700c70">Update</th>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-product>
         <tr>
-          <td>{{product.id}}</td>
-          <td>{{product.storeId}}</td>
-          <td>{{product.categoryId}}</td>
-          <td>{{product.name}}</td>
-          <td>{{product.description}}</td>
-          <td>{{product.showPrice}}</td>
-          <td>{{product.price}}</td>
-          <td>{{product.favNote}}</td>
-          <td>{{product.createdOn| date:'dd-MM-yyyy'}}</td>
-          <td>{{product.createdBy}}</td>
-          <td>{{product.active}}</td>
-          <td>{{product.imagePath}}</td>
-          <td><button type="button" (click)="UpdateProduct(product) " style="margin-left: 2%" routerlink=""
-            data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning">Update</button></td>
+          <td class="text-center">{{product.id}}</td>
+          <td class="text-center">{{product.storeId}}</td>
+          <td class="text-center">{{product.categoryId}}</td>
+          <td class="text-center">{{product.name}}</td>
+          <td class="text-center">{{product.description}}</td>
+          <td class="text-center">{{product.showPrice}}</td>
+          <td class="text-center">{{product.price}}</td>
+          <td class="text-center">{{product.favNote}}</td>
+          <td class="text-center">{{product.createdOn| date:'dd-MM-yyyy'}}</td>
+          <td class="text-center">{{product.createdBy}}</td>
+          <td class="text-center">{{product.active}}</td>
+          <!-- <td>{{product.imagePath}}</td> -->
 
-          <td><button style="margin-left: 2%;" (click)="Delete(product.id)" routerlink="" class="btn btn-danger">
-              <i class="fas fa-trash"></i> Delete</button></td>
+              <td>
+                <button pButton pRipple type="button" label="Update" (click)="UpdateProduct(product)" routerLink=""
+                  data-bs-toggle="modal" data-bs-target="#exampleModal" style="font-size: 15px;"
+                  class="p-button-rounded p-button-success" icon="pi pi-pencil"></button>
+              </td>
+              
+              <td style="text-align:center;">
+                <button pButton pRipple type="button" label="Delete" (click)="Delete(product.id)" style="font-size: 15px; background :#fa3434"
+                  class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+              </td>
         </tr>
       </ng-template>
     </p-table>

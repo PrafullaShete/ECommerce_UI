@@ -7,6 +7,11 @@ import { NgxBootstrapConfirmService } from 'ngx-bootstrap-confirm';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from 'ngx-toastr';
 import { ExcelService } from '../services/prodExel.service';
+import { ConfirmationService } from 'primeng/api';
+import { Message } from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
+
+
 
 @Component({
   selector: 'app-productcomp',
@@ -21,16 +26,21 @@ export class ProductcompComponent implements OnInit {
   @ViewChild('closebutton') closebutton: any;
   tempid: any = 0;
   submitted = false;
-  Validators: any
+  Validators: any;
+  msgs: Message[] = [];
+
+
   constructor(private productapiservices: productApiServices, public router: Router,
     private formBuilder: FormBuilder, private ngxBootstrapConfirmService: NgxBootstrapConfirmService,
-    private spinner: NgxSpinnerService, public toastr: ToastrService, private excelService: ExcelService) { }
+    private spinner: NgxSpinnerService, public toastr: ToastrService, private excelService: ExcelService, private confirmationService: ConfirmationService,
+    private primengConfig: PrimeNGConfig) { }
   ngOnInit(): void {
     this.GetAllProduct();
     this.spinner.show();
     setTimeout(() => {
       this.spinner.hide();
     }, 3000);
+    this.primengConfig.ripple = true;
     this.productObj = new Model();
     this.insertForm = this.formBuilder.group({
       id: [0],
@@ -73,24 +83,25 @@ export class ProductcompComponent implements OnInit {
 
   Delete(id: any) {
     debugger;
-    let options = {
-      title: 'Sure you want to delete this product?',
-      confirmLabel: 'Yes',
-      declineLabel: 'No'
-    }
-    this.ngxBootstrapConfirmService.confirm(options).then((res: boolean) => {
-      if (res) {
-        console.log('Yes');
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
         this.productapiservices.Delete(id).subscribe(data => {
           console.log(id);
           this.GetAllProduct();
           this.DeleteSuccess();
         })
-      } else {
-        console.log('No');
+        this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' }];
+      },
+      reject: () => {
+        this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
       }
     });
+    this.GetAllProduct();
   }
+
 
   InsertProduct() {
     debugger;
@@ -116,7 +127,7 @@ export class ProductcompComponent implements OnInit {
         console.log(data);
         this.GetAllProduct();
         this.insertSuccess();
-        
+
       })
     }
     else {
@@ -160,6 +171,7 @@ export class ProductcompComponent implements OnInit {
     this.toastr.success('Delete Product Details Successfully', ' Deleted');
   }
   exportAsXLSX(): void {
+    debugger;
     this.excelService.exportAsExcelFile(this.listproduct, 'sample');
   }
 }

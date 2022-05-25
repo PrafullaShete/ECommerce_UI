@@ -17,8 +17,10 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { TableModule } from 'primeng/table';
 import { ExcelService } from './services/prodExel.service';
-
-
+import { ButtonModule } from 'primeng/button';
+import { MessagesModule} from  'primeng/messages';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,8 +45,13 @@ import { ExcelService } from './services/prodExel.service';
     NgxSpinnerModule,
     Ng2SearchPipeModule,
     TableModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    ConfirmDialogModule,
+    ButtonModule,
+    MessagesModule,
   ],
-  providers: [HttpClient,HttpClientModule,categoryApiServices,productApiServices,ExcelService],
+  providers: [HttpClient,HttpClientModule,categoryApiServices,productApiServices,ExcelService,ConfirmationService],
   
   bootstrap: [AppComponent]
 })
